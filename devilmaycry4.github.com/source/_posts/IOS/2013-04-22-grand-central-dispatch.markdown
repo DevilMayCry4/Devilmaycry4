@@ -12,9 +12,9 @@ Grand Central Dispatch (GCD)是Apple开发的一个多核编程的解决方法�
 <p>
 应用举例
 让我们来看一个编程场景。我们要在iphone上做一个下载网页的功能，该功能非常简单，就是在iphone上放置一个按钮，点击该按钮时，显示一个转动的圆圈，表示正在进行下载，下载完成之后，将内容加载到界面上的一个文本控件中。不用GCD前
-虽然功能简单，但是我们必须把下载过程放到后台线程中，否则会阻塞UI线程显示。所以，如果不用GCD, 我们需要写如下3个方法：<strong>someClick</strong> 方法是点击按钮后的代码，可以看到我们用NSInvocationOperation建了一个后台线程，并且放到NSOperationQueue中。后台线程执行<strong>download</strong>方法。
-<strong>download</strong> 方法处理下载网页的逻辑。下载完成后用<strong>performSelectorOnMainThread</strong>执行<strong>download_completed</strong> 方法。
-<strong>download_completed</strong> 进行clear up的工作，并把下载的内容显示到文本控件中。
+虽然功能简单，但是我们必须把下载过程放到后台线程中，否则会阻塞UI线程显示。所以，如果不用GCD, 我们需要写如下3个方法：<font color='red'>someClick</font> 方法是点击按钮后的代码，可以看到我们用NSInvocationOperation建了一个后台线程，并且放到NSOperationQueue中。后台线程执行<font color='red'>download</font>方法。
+<font color='red'>download</font> 方法处理下载网页的逻辑。下载完成后用<font color='red'>performSelectorOnMainThread</font>执行<font color='red'>download_completed</font> 方法。
+<font color='red'>download_completed</font> 进行clear up的工作，并把下载的内容显示到文本控件中。
 
 这3个方法的代码如下:
 </p>
