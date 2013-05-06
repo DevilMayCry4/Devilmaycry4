@@ -3,7 +3,7 @@ layout: post
 title: "Mac 虚拟机搭建 WP8开发环境"
 date: 2013-04-21 20:40
 comments: true
-categories: WindowsPhone
+categories: windowsphone
 ---
 <p>使用Vmware Fusion 5 安装win8 pro 
 打开虚拟机文件包，在***.vmx文件中添加
