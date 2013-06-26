@@ -1,0 +1,761 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | IOS | Hexo</title>
+  <meta name="author" content="John Doe">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Hexo"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Hexo</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">IOS</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-24T07:15:00.000Z"><a href="/2013/05/24/2013-05-24-hou-tai-qing-qiu-duo-xie-shi-jian/">May 24 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/24/2013-05-24-hou-tai-qing-qiu-duo-xie-shi-jian/">后台请求多些时间</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="code"><pre>   <span class="built_in">UIApplication</span> *app = [<span class="built_in">UIApplication</span> sharedApplication];
+    
+    <span class="comment">//一个后台任务标识符</span>
+    UIBackgroundTaskIdentifier taskID;
+    taskID = [app beginBackgroundTaskWithExpirationHandler:^{
+        <span class="comment">//如果系统觉得我们还是运行了太久，将执行这个程序块，并停止运行应用程序</span>
+        [app endBackgroundTask:taskID];
+    }];
+    <span class="comment">//UIBackgroundTaskInvalid表示系统没有为我们提供额外的时候</span>
+    <span class="keyword">if</span> (taskID == UIBackgroundTaskInvalid) {
+        <span class="built_in">NSLog</span>(@<span class="string">"Failed to start background task!"</span>);
+        <span class="keyword">return</span>;
+    }
+    <span class="keyword">while</span> (app<span class="variable">.backgroundTimeRemaining</span> &gt;<span class="number">0.0</span>)
+    {
+        
+    }
+    <span class="built_in">NSLog</span>(@<span class="string">"Starting background task with %f seconds remaining"</span>, app<span class="variable">.backgroundTimeRemaining</span>);
+    [<span class="built_in">NSThread</span> sleepForTimeInterval:<span class="number">10</span>];
+    <span class="built_in">NSLog</span>(@<span class="string">"Finishing background task with %f seconds remaining"</span>,app<span class="variable">.backgroundTimeRemaining</span>);
+    <span class="comment">//告诉系统我们完成了</span>
+    [app endBackgroundTask:taskID];
+</pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-24T03:57:00.000Z"><a href="/2013/05/24/2013-05-24-ya-suo-shi-pin/">May 24 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/24/2013-05-24-ya-suo-shi-pin/">压缩视频</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre>- (void) lowQuailtyWithInputURL:(NSURL*)inputURL
+                                   outputURL:(NSURL*)outputURL
+                                     blockHandler:(void (^)(AVAssetExportSession*))handler
+{
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:<span class="keyword">nil</span>];
+    AVAssetExportSession *session = <span class="string">[[AVAssetExportSession alloc] initWithAsset:asset     presetName:AVAssetExportPresetMediumQuality];
+    session.outputURL = outputURL;
+    session.outputFileType = AVFileTypeQuickTimeMovie;
+    [session exportAsynchronouslyWithCompletionHandler:^(void)
+     {
+         handler(session);
+     }];
+}
+
+</pre></td></tr></table></figure>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="code"><pre>[<span class="keyword">self</span> <span class="method">lowQuailtyWithInputURL:</span>video <span class="method">outputURL:</span>output <span class="method">blockHandler:</span>^(<span class="class">AVAssetExportSession</span> *session)
+{
+     if (session.status == <span class="class">AVAssetExportSessionStatusCompleted</span>)
+     {
+         
+     }
+     else
+     {
+         
+         
+     }
+}];
+
+</pre></td></tr></table></figure>
+
+
+<p>
+在block里面检测成功，失败，或者是取消，然后释放session.
+
+期间可以通过不断的查看session的progress属性来获取转换的进度。
+
+可以设置这些压缩质量
+
+AVF_EXPORT NSString <em>const AVAssetExportPresetLowQuality        NS_AVAILABLE_IOS(4_0);
+AVF_EXPORT NSString </em>const AVAssetExportPresetMediumQuality     NS_AVAILABLE_IOS(4_0);
+AVF_EXPORT NSString *const AVAssetExportPresetHighestQuality    NS_AVAILABLE_IOS(4_0);
+</p>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-22T01:54:00.000Z"><a href="/2013/05/22/2013-05-22-ftpwen-jian-lei-xing/">May 22 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/22/2013-05-22-ftpwen-jian-lei-xing/">FTP文件类型</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>
+IOS FTP获取文件列表信息后。kCFFTPResourceType 对应的是文件类型。这个在 sys/dirent.h 头文件中有定义。
+</p>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="preprocessor">#<span class="keyword">define</span>	DT_UNKNOWN	 0</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_FIFO		 1</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_CHR		 2</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_DIR		 4</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_BLK		 6</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_REG		 8</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_LNK		10</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_SOCK		12</span>
+<span class="preprocessor">#<span class="keyword">define</span>	DT_WHT		14</span>
+</pre></td></tr></table></figure>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre>
+<span class="title">DT_UNKNOWN</span>    未知类型
+
+DT_RET        普通文件
+
+DT_DIR        目录文件
+
+DT_FIFO       命名管道
+
+DT_SOCK       本地套接口
+
+DT_CHR        字符设备文件
+
+DT_BLK        块设备文件
+</pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-14T04:18:00.000Z"><a href="/2013/05/14/2013-05-14-xi-tong-uiben-di-hua/">May 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/14/2013-05-14-xi-tong-uiben-di-hua/">系统UI本地化</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>
+在iOS应用中，有时候会需要调用系统的一些UI控件，例如：
+
+在UIWebView中长按会弹出系统的上下文菜单
+在UIImagePickerController中会使用系统的照相机界面
+在编译状态下的UITableViewCell，处于待删除时，会有一个系统的删除按钮。
+以上这些UI控件中，其显示的语言并不是和你当前手机的系统语言一致的。而是根据你的App内部的语言设置来显示。结果就是，如果你没有设置恰当的话，你的中文App可能会出现一些英文的控件文字。
+</p>
+
+<p>
+用vim直接打开工程的Info.plist文件，在文件中增加如下内容即可：
+</p>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">key</span>&gt;</span>CFBundleLocalizations<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">array</span>&gt;</span>
+           <span class="tag">&lt;<span class="title">string</span>&gt;</span>zh_CN<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+           <span class="tag">&lt;<span class="title">string</span>&gt;</span>en<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+   <span class="tag">&lt;/<span class="title">array</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+
+<p>from:
+<a href="http://blog.devtang.com/blog/2013/01/23/set-ios-system-ui-language/">
+<a href="http://blog.devtang.com/blog/2013/01/23/set-ios-system-ui-language/">http://blog.devtang.com/blog/2013/01/23/set-ios-system-ui-language/</a>
+</a>
+</p>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-06T05:45:00.000Z"><a href="/2013/05/06/2013-05-06-arc/">May 6 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/06/2013-05-06-arc/">ARC</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>非ARC工程使用ARC文件时候，选中工程-&gt;TARGETS-&gt;相应的target然后选中右侧的“Build Phases”，向下就找到“Compile Sources”了。对相应的文件添加:-fobjc-arc参数。
+</p>
+<p>
+ARC工程使用非ARC文件时候，选中工程-&gt;TARGETS-&gt;相应的target然后选中右侧的“Build Phases”，向下就找到“Compile Sources”了。对相应的文件添加:-fno-objc-arc参数。
+</p>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-27T09:18:00.000Z"><a href="/2013/04/27/2013-04-27-ios-zhi-zuo-jing-tai-ku/">Apr 27 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/27/2013-04-27-ios-zhi-zuo-jing-tai-ku/">IOS 制作静态库</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h5>1.静态库工程的建立：</h5>
+<p>
+Xcode New一个新的project，选择IOS下面的Framework&amp;Library，下面有一个Cocoa Touch Static Library。直接next去建立一个Print这样的工程。
+</p>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-26T08:25:00.000Z"><a href="/2013/04/26/2013-04-26-xcode-bu-jin-c-plus-plus-duan-dian/">Apr 26 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/26/2013-04-26-xcode-bu-jin-c-plus-plus-duan-dian/">Xcode 不进C++ 断点</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>
+Xcode4.6的bug能进去oc函数的断点，但是c++函数没进去。
+</p>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-26T06:29:00.000Z"><a href="/2013/04/26/2013-04-26-air-print/">Apr 26 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/26/2013-04-26-air-print/">Air Print</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Air Print</p>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="code"><pre>- (void)drawPageAtIndex:(NSInteger)pageIndex inRect:(CGRect)printableRect
+{
+    CGRect pageRect = CGPDFPageGetBoxRect([_item openPage:pageIndex +<span class="number">1</span>], kCGPDFMediaBox)<span class="comment">;</span>
+    CGContextRef context = UIGraphicsGetCurrentContext()<span class="comment">;</span>
+    CGContextSetRGBFillColor(context, <span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>)<span class="comment">;</span>
+    CGContextFillRect(context,printableRect)<span class="comment">;</span>
+    CGContextTranslateCTM(context, <span class="number">0.0</span>, printableRect<span class="preprocessor">.size</span><span class="preprocessor">.height</span>)<span class="comment">;</span>
+    CGContextTranslateCTM(context, printableRect<span class="preprocessor">.origin</span><span class="preprocessor">.x</span>, printableRect<span class="preprocessor">.origin</span><span class="preprocessor">.y</span>)<span class="comment">;</span>
+    CGContextScaleCTM(context, printableRect<span class="preprocessor">.size</span><span class="preprocessor">.width</span>/pageRect<span class="preprocessor">.size</span><span class="preprocessor">.width</span>, -printableRect<span class="preprocessor">.size</span><span class="preprocessor">.height</span>/pageRect<span class="preprocessor">.size</span><span class="preprocessor">.height</span>)<span class="comment">;</span>
+    CGContextSaveGState(context)<span class="comment">;</span>
+    CGContextDrawPDFPage(context, [_item openPage:pageIndex + <span class="number">1</span>])<span class="comment">;</span>
+    CGContextRestoreGState(context)<span class="comment">;</span>
+
+
+} 
+</pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-24T01:30:00.000Z"><a href="/2013/04/24/2013-04-24-cgpdfbox/">Apr 24 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/24/2013-04-24-cgpdfbox/">CGPDFBox</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A PDF describes the content and appearance of one or more pages. The exact size of that page is not as straightforward as you might think. There can be up to 5 different descriptions in a PDF that relate to its size. These are called the page boxes:</p>
+
+<figure class="highlight lang-objc"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="title">enum</span> CGPDFBox {
+   <span class="title">kCGPDFMediaBox</span> = <span class="number">0</span>,
+   kCGPDFCropBox = <span class="number">1</span>,
+   kCGPDFBleedBox = <span class="number">2</span>,
+   kCGPDFTrimBox = <span class="number">3</span>,
+   kCGPDFArtBox = <span class="number">4</span>
+};
+<span class="title">typedef</span> enum CGPDFBox CGPDFBox;
+</pre></td></tr></table></figure>
+
+
+<h5>KCGPDFMediaBox</h5>
+<p>
+The MediaBox is used to specify the width and height of the page. For the average user, this probably equals the actual page size. For prepress use, this is not the case as we prefer our pages to be defined slightly oversized so that we can see the bleed (Images or other elements touching an outer edge of a printed page need to extend beyond the edge of the paper to compensate for inaccuracies in trimming the page), the crop marks and useful information such as the file name or the date and time when the file was created. This means that PDF files used in graphic arts usually have a MediaBox which is larger then the trimmed page size. The MediaBox is the largest page box in a PDF. The other page boxes can equal the size of the MediaBox but they cannot be larger.
+</p>
+
+<h5>kCGPDFCropBox</h5>
+<p>
+The CropBox defines the region to which the page contents are to be clipped. Acrobat uses this size for screen display and printing. For prepress use, the CropBox is pretty irrelevant. The GWG industry association recommends not to use the CropBox at all.
+</p>
+
+ 
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/24/2013-04-24-cgpdfbox/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-23T07:56:00.000Z"><a href="/2013/04/23/2013-04-23-pdfnei-rong-liu-jie-xi/">Apr 23 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/23/2013-04-23-pdfnei-rong-liu-jie-xi/">PDF内容流解析</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3>PDF Document Parsing</h3>
+<p>Quartz提供了让你检查PDF文档结构和内容流的方法。通过这些方法，你可以获取文档目录的条目和与每个条目相关的内容。一个PDF的内容流（contentstream）正如其名字所暗示的—一个连续的数据流 例如&#39;BT 12 /F71 Tf (draw thistext) Tj . . . &#39;此处PDF操作符以及他们的描述符都混有实际的PDF内容。检查内容流,你需要按顺序访问它。</p>
+
+<h3>PDF操作符</h3>
+<p><p>1). General graphics state(普通图形状态操作符)</p></p>
+<figure class="highlight lang-c"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre> <span class="attribute">w</span>: <span class="string">设置线的宽度</span>
+ <span class="attribute">J</span>: <span class="string">设置线端点风格. Butt/Round/Projecting square </span>
+ <span class="attribute">j</span>: <span class="string">设置线交叉风格. Miter/Round/Bevel</span>
+ <span class="attribute">M</span>: <span class="string">设置Miter Limit</span>
+ <span class="attribute">d</span>: <span class="string">设置虚线风格.</span>
+ <span class="attribute">ri</span>: <span class="string">设置Rendering Intent(呈色意向)</span>
+ <span class="attribute">i</span>: <span class="string">设置平面化容忍度.</span>
+ <span class="attribute">gs</span>: <span class="string">设置图形状态参数.</span>
+</pre></td></tr></table></figure>
+
+
+<p><p>2). Special graphics state(特殊图形状态操作符)</p></p>
+<figure class="highlight lang-c"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre> <span class="method">q:</span> 保存当前图形状态
+ <span class="class">Q</span>：回复图形状态.
+ cm：设置当前装换矩阵.
+</pre></td></tr></table></figure>
+
+
+<p><p>3). Path construction(路径构建操作符)</p></p>
+<figure class="highlight lang-c"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre> <span class="attribute">m</span>: <span class="string">移动当前指针到指定位置.</span>
+ <span class="attribute">l</span>: <span class="string">添加一条连接当前指针到指定位置的线段.</span>
+ <span class="attribute">c</span>: <span class="string">添加一条Bezier曲线， 有2个控制点，2个端点.</span>
+ <span class="attribute">v</span>: <span class="string">添加一条Bezier曲线， 2个控制点重合.</span>
+ <span class="attribute">y</span>: <span class="string">添加一条Bezier曲线， 第二个控制点和第二个端点重合.</span>
+ <span class="attribute">h</span>: <span class="string">闭合路径</span>
+ <span class="attribute">re</span>: <span class="string">添加一个矩形.</span>
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/23/2013-04-23-pdfnei-rong-liu-jie-xi/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/IOS/IOS/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/categories/IOS/IOS/page/3/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/IOS/">IOS</a><small>38</small></li>
+  
+    <li><a href="/categories/IOS/IOS/">IOS</a><small>35</small></li>
+  
+    <li><a href="/categories/OSX/">OSX</a><small>1</small></li>
+  
+    <li><a href="/categories/OSX/OSX/">OSX</a><small>1</small></li>
+  
+    <li><a href="/categories/Other/">Other</a><small>4</small></li>
+  
+    <li><a href="/categories/Other/Other/">Other</a><small>4</small></li>
+  
+    <li><a href="/categories/windowsphone/">windowsphone</a><small>5</small></li>
+  
+    <li><a href="/categories/windowsphone/windowsphone/">windowsphone</a><small>5</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 John Doe
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
